@@ -1,0 +1,24 @@
+1、安装 ckermit
+sudo apt-get install ckermit
+
+2、编辑配置文件 vim ~/.mykermrc，写入以下内容：
+set line /dev/ttyUSB0
+set speed 115200
+set carrier-watch off
+set handshake none
+set flow-control none
+robust
+set file type bin
+set file name lit
+set rec pack 1000
+set send pack 1000
+set windows 5
+
+3、# lsmod | grep usbserial
+如果有 usbserial，usbserial 33019 1 ch341 之类的信息则说明系统支持USB转串口
+如果没有则 sudo apt-get install setserial
+插上USB转串口，在终端输入命令 # dmesg | grep ttyUSB0，如果出现连接成功信息，则说明ubuntu系统已经识别该设备。
+
+4、在 root 权限下打开 kermit
+sudo kermit -c
+出现分割线后，敲回车，再输入树莓派用户名、密码即可

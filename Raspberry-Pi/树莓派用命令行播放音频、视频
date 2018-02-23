@@ -1,0 +1,13 @@
+sudo apt-get install omxplayer
+一般系统默认已经安装好了
+播放视频需要通过 HDMI 连接到显示器看
+
+sudo  omxplayer  －r  －o ［both，local，hdmi］ 文件名  
+例：
+omxplayer -o hdmi /path/to/filename.mp4
+
+－o 说明了输出源，-o hdmi 表示音频直接通过 HDMI 播放
+－r 说明全屏幕播放
+'+' 和'-'按键控制播放的声音大小
+按左右箭头快进
+按 q 退出

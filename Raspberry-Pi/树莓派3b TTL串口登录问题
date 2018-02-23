@@ -1,0 +1,12 @@
+树莓派3b 的主控芯片内部，将串口分配改了芯片内部集成的蓝牙，所以导致串口不能使用（Putty连接后会一直保持黑屏）。
+为了能够使用 TTL 串口登录树莓派，需要修改根文件夹下 boot 里的 config.txt 文件。
+
+输入命令：
+pi@raspberrypi:~ $ sudo nano /boot/config.txt
+
+打开config.txt文件，在最后一行加上
+dtoverlay=pi3-miniuart-bt
+
+保存退出，重启启动树莓派，就可以使用TTL串口登录了
+
+注：若在树莓派3启动完成后，打开串口登录，需要先回车，要不然不会跳到输入用户名

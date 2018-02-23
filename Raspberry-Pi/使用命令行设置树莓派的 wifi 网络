@@ -1,0 +1,20 @@
+1、
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+
+2、
+在文件的底部添加 wifi 信息：
+network={
+ssid=”zhrq95 – wifi”
+psk=”123456789″
+key_mgmt=WPA-PSK
+}
+
+3、
+wpa-supplicant 在几秒钟内应该就会注意到设置已经改变了，并且会尝试去连接这个网络。
+如果没有，那么就需要使用 sudo ifdown wlan0 和 sudo ifup wlan0 命令手动重启接口;
+或者直接使用 sudo reboot 命令重启树莓派
+
+4、
+使用 ifconfig wlan0 命令确认是否已经成功连接上网络：
+如果inet addr中已经有地址了，说明树莓派成功连接上了网络;
+如果没有，检查 wifi 密码和 ESSID 是否正确。
