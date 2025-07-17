@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>机电工程学院欢迎您</title>
+    
+	<script type="text/javascript" src="./js/js.js"></script>
+    
+
+        
+    
+	<script>
+	$(function() {
+        var Accordion = function(el, multiple) {
+          this.el = el || {};
+          this.multiple = multiple || false;
+
+          // Variables privadas
+          var links = this.el.find('.link');
+          // Evento
+          links.on('click', {
+            el: this.el,
+            multiple: this.multiple
+          },
+          this.dropdown)
+        }
+
+        Accordion.prototype.dropdown = function(e) {
+          var $el = e.data.el;
+          $this = $(this),
+          $next = $this.next();
+
+          $next.slideToggle();
+          $this.parent().toggleClass('open');
+
+          if (!e.data.multiple) {
+            $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+          };
+        }
+        var accordion = new Accordion($('.accordion'), false);
+      });</script>
+          
+	<script>$(function() {
+        $("#slider").responsiveSlides({
+          auto: true,
+          nav: true,
+          speed: 500,
+          namespace: "callbacks",
+          pager: true,
+        });
+      });</script>
+   
+    <script>$(function() {
+        var sWidth = $("#focus").width(); //获取焦点图的宽度（显示面积） 
+        var len = $("#focus ul li").length; //获取焦点图个数 
+        var index = 0;
+        var picTimer;
+
+        //以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮 
+        var btn = "<div class='btnBg'></div><div class='btn'>";
+        for (var i = 0; i < len; i++) {
+          btn += "<span></span>";
+        }
+        btn += "</div><div class='preNext pre'></div><div class='preNext next'></div>";
+        $("#focus").append(btn);
+        $("#focus .btnBg").css("opacity", 0.5);
+
+        //为小按钮添加鼠标滑入事件，以显示相应的内容 
+        $("#focus .btn span").css("opacity", 0.4).mouseenter(function() {
+          index = $("#focus .btn span").index(this);
+          showPics(index);
+        }).eq(0).trigger("mouseenter");
+
+        //上一页、下一页按钮透明度处理 
+        $("#focus .preNext").css("opacity", 0.2).hover(function() {
+          $(this).stop(true, false).animate({
+            "opacity": "0.5"
+          },
+          300);
+        },
+        function() {
+          $(this).stop(true, false).animate({
+            "opacity": "0.2"
+          },
+          300);
+        });
+
+        //上一页按钮 
+        $("#focus .pre").click(function() {
+          index -= 1;
+          if (index == -1) {
+            index = len - 1;
+          }
+          showPics(index);
+        });
+
+        //下一页按钮 
+        $("#focus .next").click(function() {
+          index += 1;
+          if (index == len) {
+            index = 0;
+          }
+          showPics(index);
+        });
+
+        //本例为左右滚动，即所有li元素都是在同一排向左浮动，所以这里需要计算出外围ul元素的宽度 
+        $("#focus ul").css("width", sWidth * (len));
+
+        //鼠标滑上焦点图时停止自动播放，滑出时开始自动播放 
+        $("#focus").hover(function() {
+          clearInterval(picTimer);
+        },
+        function() {
+          picTimer = setInterval(function() {
+            showPics(index);
+            index++;
+            if (index == len) {
+              index = 0;
+            }
+          },
+          4000); //此4000代表自动播放的间隔，单位：毫秒 
+        }).trigger("mouseleave");
+
+        //显示图片函数，根据接收的index值显示相应的内容 
+        function showPics(index) { //普通切换 
+          var nowLeft = -index * sWidth; //根据index值计算ul元素的left值 
+          $("#focus ul").stop(true, false).animate({
+            "left": nowLeft
+          },
+          300); //通过animate()调整ul元素滚动到计算出的position 
+          //$("#focus .btn span").removeClass("on").eq(index).addClass("on"); //为当前的按钮切换到选中的效果 
+          $("#focus .btn span").stop(true, false).animate({
+            "opacity": "0.4"
+          },
+          300).eq(index).stop(true, false).animate({
+            "opacity": "1"
+          },
+          300); //为当前的按钮切换到选中的效果 
+        }
+      });</script>
+    
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    
+	<style type="text/css">
+	a:link,a:visited{ text-decoration:none; /*超链接无下划线*/ } 
+	a:link {color: #000} /* 未访问的链接 */ 
+	a:hover {color: #FF00FF} /* 鼠标移动到链接上 */ 
+	a:active {color:#F2C789} /* 选定的链接 */
+    </style>
+    
+    <style type="text/css">
+	* {margin:0; padding:0;} 
+	body {font-size:12px; color:#222; font-family:Verdana,Arial,Helvetica,sans-serif; background:#f0f0f0;} 
+	.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;} 
+	.clearfix {zoom:1;} ul,li {list-style:none;} img {border:0;} 
+	
+	.wrapper2 {float:left;margin-left:12%;margin-top:140px;position:relative;z-index:1;} /* 主图片 */ 
+	#focus {width:500px; height:280px; overflow:hidden; position:relative;} 
+	#focus ul {height:380px; position:absolute;} 
+	#focus ul li {float:left; width:500px; height:280px; overflow:hidden; position:relative; background:#000;} 
+	#focus ul li a:link {color: #fff;font-size:16px;line-height:25px;} 
+	#focus ul li div {position:absolute; overflow:hidden;} 
+	#focus .btnBg {position:absolute; width:500px; height:20px; left:0; bottom:0; background:#000;} 
+	#focus .btn {position:absolute; width:480px; height:10px; padding:5px 10px; right:0; bottom:0; text-align:right;} 
+	#focus .btn span {display:inline-block; _display:inline; _zoom:1; width:25px; height:10px; _font-size:0; margin-left:5px; cursor:pointer; background:#fff;} 
+	#focus .btn span.on {background:#fff;} 
+	#focus .preNext {width:45px; height:100px; position:absolute; top:90px; cursor:pointer;} 
+	#focus .pre {left:0;} 
+	#focus .next {right:0; background-position:right top;} 
+	#focus ul li a img{cursor: pointer; transition: all 1s;} 
+	#focus ul li a img:hover{transform: scale(1.15);}
+    </style>
+    
+    <style type="text/css">body{background-color:#F6F6F6} body{overflow-x: hidden;}</style></head>
+  
+  <body>
+  
+    <header id="header" class="animate-onscroll">
+      <!-- main Header -->
+      <div id="top">
+        <div id="whutlogo">
+          <img src="./img/whutlogo.png"></div>
+        <div id="jd_logo">
+          <img src="./img/jd_logo.png"></div>
+      </div>
+     
+      <!-- Lower Header -->
+      <div id="lower-header" class="navbg">
+        <div id="container">
+          <ul id="navigation">
+            <!-- 首页 -->
+            <li class="navhome">
+              <a href="./武汉理工大学机电学院首页.html">首页</a></li>
+            <!-- /首页 -->
+            <!-- 学院概况 -->
+            <li>
+              <li>
+                <a href="sample.html">学院概况</a>
+                <ul>
+                  <li>
+                    <a href="sample.html">学院简介</a></li>
+                  <li>
+                    <a href="sample.html">学院领导</a></li>
+                  <li>
+                    <a href="sample.html">组织机构</a></li>
+                  <li>
+                    <a href="sample.html">系部设置</a></li>
+                  <li>
+                    <a href="sample.html">名师风采</a></li>
+                  <li>
+                    <a href="sample.html">办公电话</a></li>
+                  <li>
+                    <a href="sample.html">图书分馆</a></li>
+                </ul>
+              </li>
+              <!-- /学院概况 -->
+              <!-- 人事工作 -->
+              <li>
+                <li>
+                  <a href="sample.html">人事工作</a>
+                  <ul>
+                    <li>
+                      <a href="sample.html">通知公告</a></li>
+                    <li>
+                      <a href="sample.html">高端人才</a></li>
+                    <li>
+                      <a href="sample.html">师资队伍</a></li>
+                    <li>
+                      <a href="sample.html">博士后</a></li>
+                    <li>
+                      <a href="sample.html">校友风采</a></li>
+                  </ul>
+                </li>
+                <!-- /人事工作 -->
+                <!-- 党建工作 -->
+                <li>
+                  <li>
+                    <a href="sample.html">党建工作</a>
+                    <ul>
+                      <li>
+                        <a href="sample.html">组织机构</a></li>
+                      <li>
+                        <a href="sample.html">党群工作</a></li>
+                      <li>
+                        <a href="sample.html">理论学习</a></li>
+                      <li>
+                        <a href="sample.html">网上党校</a></li>
+                      <li>
+                        <a href="sample.html">纪检统战</a></li>
+                      <li>
+                        <a href="sample.html">工会工作</a></li>
+                    </ul>
+                  </li>
+                  <!-- /党建工作 -->
+                  <!-- 科学研究 -->
+                  <li>
+                    <li>
+                      <a href="sample.html">科学研究</a>
+                      <ul>
+                        <li>
+                          <a href="sample.html">通知公告</a></li>
+                        <li>
+                          <a href="sample.html">科研政策</a></li>
+                        <li>
+                          <a href="sample.html">科研成果</a></li>
+                        <li>
+                          <a href="sample.html">科研基地</a></li>
+                      </ul>
+                    </li>
+                    <!-- /科学研究 -->
+                    <!-- 本科生教学 -->
+                    <li>
+                      <li>
+                        <a href="sample.html">本科生教学</a>
+                        <ul>
+                          <li>
+                            <a href="sample.html">通知公告</a></li>
+                          <li>
+                            <a href="sample.html">教学成果</a></li>
+                          <li>
+                            <a href="sample.html">第二课堂</a></li>
+                        </ul>
+                      </li>
+                      <!-- /本科生教学 -->
+                      <!-- 研究生教学 -->
+                      <li>
+                        <li>
+                          <a href="sample.html">研究生教学</a>
+                          <ul>
+                            <li>
+                              <a href="sample.html">通知公告</a></li>
+                            <li>
+                              <a href="sample.html">学科概况</a></li>
+                            <li>
+                              <a href="sample.html">导师队伍</a></li>
+                            <li>
+                              <a href="sample.html">培养管理</a></li>
+                            <li>
+                              <a href="sample.html">招生信息</a></li>
+                            <li>
+                              <a href="sample.html">文件下载</a></li>
+                          </ul>
+                        </li>
+                        <!-- /研究生教学 -->
+                        <!-- 学生工作 -->
+                        <li>
+                          <li>
+                            <a href="sample.html">学生工作</a>
+                            <ul>
+                              <li>
+                                <a href="sample.html">通知公告</a></li>
+                              <li>
+                                <a href="sample.html">学工动态</a></li>
+                              <li>
+                                <a href="sample.html">学生组织</a></li>
+                              <li>
+                                <a href="sample.html">学术交流</a></li>
+                              <li>
+                                <a href="sample.html">就业指导</a></li>
+                            </ul>
+                          </li>
+                          <!-- /学生工作 -->
+                          <!-- 国际合作 -->
+                          <li>
+                            <li>
+                              <a href="sample.html">国际合作</a>
+                              <ul>
+                                <li>
+                                  <a href="sample.html">国际教育</a></li>
+                                <li>
+                                  <a href="sample.html">国际交流</a></li>
+                              </ul>
+                            </li>
+                            <!-- /国际合作 -->
+                            <!-- 实验教学 -->
+                            <li>
+                              <li>
+                                <a href="sample.html">实验教学</a>
+                                <ul>
+                                  <li>
+                                    <a href="sample.html">实验中心</a></li>
+                                  <li>
+                                    <a href="sample.html">工程训练中心</a></li>
+                                  <li>
+                                    <a href="sample.html">研究生实验教学平台</a></li>
+                                </ul>
+                              </li>
+                              <!-- /实验教学作 -->
+                              <li>
+                            <li>
+                              <a >文件下载</a>
+                              <ul>
+                                <li>
+                                  <a href="./download/武汉理工大学校歌（齐唱版）.zip">卓越之歌</a></li>
+                                <li>
+                                  <a href="./download/掌上理工大.apk">掌上理工大</a></li>
+                              </ul>
+                            </li>
+        </div>
+        <!-- /Lower Header --></div>
+        <script  type="text/javascript"> 
+$(document).ready(function(){
+	
+	$(".navbg").capacityFixed();
+	
+	$("#navigation > li").not(".navhome").hover(function(){
+		$(this).addClass("navmoon");
+	},function(){
+		$(this).removeClass("navmoon");
+	});
+	
+});
+</script>
+ </header>
+        
+        
+   
+    <div class="wrap">
+      <div class="move-text">
+        <div class="breaking_news">
+          <h2>重要通知</h2></div>
+        <div class="marquee">
+          <div class="marquee1">
+            <a class="breaking" href="sample.html">>>机电工程学院机械工程、工业工程领域拟录取名单公示</a></div>
+          <div class="marquee2">
+            <a class="breaking" href="sample.html">>>武汉理工大学高层次人才招聘启事</a></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <script type="text/javascript" src="./js/js.js"></script>
+        <script>$('.marquee').marquee({
+            pauseOnHover: true
+          });</script>
+      </div>
+    </div>
+
+    
+    <div class="wrapper2">
+      <div id="focus">
+        <ul>
+          <li>
+            <a href="sample.html" target="_blank">
+              <img src="./img/1.jpg" alt="勇攀高峰，沙场夺佳绩"/></a>
+            <div class="caption">
+              <a href="sample.html">【创新基地】勇攀高峰，沙场夺佳绩</a></div>
+          </li>
+          <li>
+            <a href="sample.html" target="_blank">
+              <img src="./img/2.jpg" alt="友达光电奖学金颁奖典礼暨招聘会顺利举行程" /></a>
+            <div class="caption">
+              <a href="sample.html">【爱与责任】友达光电奖学金颁奖典礼暨招聘会顺利举行</a></div>
+          </li>
+          <li>
+            <a href="sample.html" target="_blank">
+              <img src="./img/3.jpg" alt="“卓越青春新梦起航”我院2015届毕业生晚会举行" /></a>
+            <div class="caption">
+              <a href="sample.html">【毕业生晚会】“卓越青春新梦起航”我院2015届毕业生晚会举行</a></div>
+          </li>
+          <li>
+            <a href="sample.html" target="_blank">
+              <img src="./img/4.jpg" alt="机电学院“卓研杯”师生运动会喜获团体亚军" /></a>
+            <div class="caption">
+              <a href="sample.html">【学院风采】机电学院“卓研杯”师生运动会喜获团体亚军</a></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- wrapper end -->
+   
+<video id="video" width="500px" height="280px" controls>
+  <source src="./video/movie.mp4" type="video/mp4">
+  <source src="./video/movie.ogg" type="video/ogg">
+  <source src="./video/movie.webm" type="video/webm">
+  <object data="./video/movie.mp4" width="500" height="280" margin-top="18px">
+    <embed src="./video/movie.swf" width="500" height="280">
+  </object> 
+</video>  
+ 
+
+  
+    <br />
+    <br />
+      
+    
+    <div class="normal_box1">
+      <div class="normal_tit">
+        <h2>通知公告</h2>
+        <a href="sample.html" target=_blank>MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="博士学位论文预答辩公告">本科学位论文答辩公告</a></li>
+        <li>
+          <a href="sample.html" target="_blank" title="博士学位论文答辩公告">硕士学位论文答辩公告</a></li>
+        <li>
+          <a href="sample.html" target="_blank" title="博士学位论文答辩公告">博士学位论文预答辩公告</a></li>
+        <li>
+          <a href="sample.html" target="_blank" title="博士学位论文答辩公告">博士学位论文答辩公告</a></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【机电学院】推荐2017届优秀本科毕业生免试攻读硕士研究生结果公示">【机电学院】推荐2017届优秀本科毕业生免试攻读硕士研究生结果公示</a></li>
+        <li>
+          <a href="sample.html" target="_blank" title="2016级武汉理工大学—英国伯明翰大学机械工程专业“国际班”遴选面试通知">2016级武汉理工大学—英国伯明翰大学机械工程专业“国际班”遴选面试通知</a></li>
+      </ul>
+    </div>
+    <div class="normal_box2">
+      <div class="normal_tit">
+        <h2>学院动态</h2>
+        <a href="sample.html" target="_blank">MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="【校运专题】校运开幕青春梦　一代风华理工人">【校运专题】校运开幕青春梦　一代风华理工人</a>
+          <span>2016-10-30</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【本科教学】曾春年副校长带队莅临机电工程学院调研本科教学迎评工作">【本科教学】曾春年副校长带队莅临机电工程学院调研...</a>
+          <span>2016-10-27</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学院动态】校党委万志建副书记带队来学院督导调研基层党建工作">【学院动态】校党委万志建副书记带队来学院督导..</a>
+          <span>2016-09-29</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学院动态】学院召开2016年下半年工作布置暨师德师风建设报告会">【学院动态】学院召开2016年下半年工作布置暨师德...</a>
+          <span>2016-09-23</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学院动态】夏江敬书记一行到机电工程学院调研党风廉政建设工作">【学院动态】夏江敬书记一行到机电工程学院...</a>
+          <span>2016-04-27</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学院动态】2016年全院班主任会议顺利召开">【学院动态】2016年全院班主任会议顺利召开</a>
+          <span>2016-04-22</span></li>
+      </ul>
+    </div>
+    <div class="normal_box1">
+      <div class="normal_tit">
+        <h2>学生工作</h2>
+        <a href="sample.html" target="_blank">MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="【团学教育】知团，爱团，随团成长">【团学教育】知团，爱团，随团成长</a>
+          <span>2016-10-26</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【团学教育】认真学习“双基”教育，努力争做优秀团员">【团学教育】认真学习“双基”教育，努力...</a>
+          <span>2016-10-26</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【团学教育】机电学院包装工程1601班“双基”教育成果显著">【团学教育】机电学院包装工程1601班“双...</a>
+          <span>2016-10-26</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【团学教育】“双基”教育，与团同行">【团学教育】“双基”教育，与团同行</a>
+          <span>2016-10-25</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【团学教育】播撒“双基”之种，绽放绚烂之花">【团学教育】播撒“双基”之种，绽放绚烂之花</a>
+          <span>2016-10-25</span></li>
+      </ul>
+    </div>
+    <div class="normal_box2">
+      <div class="normal_tit">
+        <h2>学术论坛</h2>
+        <a href="sample.html" target="_blank">MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="【学术交流】 “先进材料智能制造和装备集成理论与技术”高层论坛">【学术交流】 “先进材料智能制造和装备集...</a>
+          <span>2016-10-26</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学术交流】美国伊利诺伊芝加哥分校讲座通知">【学术交流】美国伊利诺伊芝加哥分校讲座通知</a>
+          <span>2016-10-19</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【学术讲座】英国伯明翰大学Robert J. Cripps教授学术报告会">【学术讲座】英国伯明翰大学Robert J. Cri...</a>
+          <span>2016-09-08</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【机电学院博导论坛】碳纤维复合材料在机械零部件上的应用">【机电学院博导论坛】碳纤维复合材料在机...</a>
+          <span>2016-05-30</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【心理健康教育讲座】正青春——提升耐挫力">【心理健康教育讲座】正青春——提升耐挫力</a>
+          <span>2016-05-10</span></li>
+      </ul>
+    </div>
+    <div class="normal_box1">
+      <div class="normal_tit">
+        <h2>教学信息</h2>
+        <a href="sample.html" target="_blank">MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="机电工程学院推荐2017年优秀应届本科毕业生免试攻读硕士研究生工作方案">关于做好2015届本科生毕业设计（论文）后期工作的通知</a>
+          <span>2016-09-10</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="机电工程学院2017年“具有突出创新能力”学生选拔细则">机电工程学院2017年“具有突出创新能力”学生选拔细则</a>
+          <span>2016-10-09</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="机电工程学院2016级试点班录取学生名单公示">机电工程学院2016级试点班录取学生名单公示</a>
+          <span>2016-09-18</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="2016级武汉理工大学—英国伯明翰大学机械工程专业“国际班”遴选面试通知">2016级武汉理工大学—英国伯明翰大学机械...</a>
+          <span>2016-09-13</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="机电工程学院推荐2017年优秀应届本科毕业生免试攻读硕士研究生工作方案">机电工程学院推荐2017年优秀应届本科毕业...</a>
+          <span>2016-09-10</span></li>
+        
+      </ul>
+    </div>
+    <div class="normal_box2">
+      <div class="normal_tit">
+        <h2>招聘就业</h2>
+        <a href="sample.html" target="_blank">MORE</a></div>
+      <ul class="art_list">
+        <li>
+          <a href="sample.html" target="_blank" title="上汽集团乘用车公司2015“荣行校园”暑期实习暨2016校园招聘活动火热启动">上汽集团乘用车公司2015“荣行校园”暑期实习...</a>
+          <span>2016-11-02</span></li>
+        <li>
+           <a href="sample.html" target="_blank" title="【信息产业】武汉四通信息服务有限公司">【信息产业】武汉四通信息服务有限公司</a>
+          <span>2016-11-03</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【机械机电】江苏常发实业集团有限公司">【机械机电】江苏常发实业集团有限公司</a>
+          <span>2016-11-03</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="上海富勒信息科技有限公司">上海富勒信息科技有限公司</a>
+          <span>2016-11-03</span></li>
+        <li>
+          <a href="sample.html" target="_blank" title="【信息产业】深圳市艾悠乐网络有限公司">【信息产业】深圳市艾悠乐网络有限公司</a>
+          <span>2016-11-02</span></li>
+       
+      </ul>
+    </div>
+  
+  <div class="foot">
+  
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-paint-brush"></i>基地建设
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="sample.html">国家级实验教学示范中心</a></li>
+          <li>
+            <a href="sample.html">湖北省数字制造重点实验室</a></li>
+          <li>
+            <a href="sample.html">武汉理工大学-伯明翰大学智能机械联合重点实验室</a></li>
+          <li>
+            <a href="sample.html">创新基地</a></li>
+            <li>
+            <a href="sample.html">创业基地</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-code"></i>快速链接
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="sample.html">系部设置</a></li>
+          <li>
+            <a href="sample.html">师资队伍</a></li>
+          <li>
+            <a href="sample.html">校友风采</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-mobile"></i>友情链接
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="sample.html">武汉理工大学</a></li>
+          <li>
+            <a href="sample.html">教育部</a></li>
+          <li>
+            <a href="sample.html">民政部民间组织管理局</a></li>
+          <li>
+            <a href="sample.html">  北京大学校友总会</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-globe"></i>联系我们
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="sample.html">院长信箱</a></li>
+          <li>
+            <a href="sample.html">书记信箱</a></li>
+          <li>
+            <a href="sample.html">学工信箱</a></li>
+          <li>
+            <a href="sample.html">电话查询</a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+  
+  <div class="footer">
+      <p class="copyright">版权所有&copy; 武汉理工大学机电工程学院<br />通讯地址：湖北省武汉市洪山区珞狮路122号 武汉理工大学机电工程学院<br /> 邮政编码：430070</p></div>
+  
+  </body>
+  
+
+</html>

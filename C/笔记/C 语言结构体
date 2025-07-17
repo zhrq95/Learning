@@ -1,0 +1,75 @@
+结构体是高级编程语言为了编程更加符合现实逻辑，而定义的由基本数据类型组成的更复杂的数据类型。
+可以被当作普通的数据类型来定义变量。
+其本质是一种新的可扩展的数据类型。
+
+定义一个结构体：
+struct 名称{
+数据类型 成员名称;
+};
+
+例：
+struct student {
+char name[64];
+int age;
+int sex;
+}
+struct student zhrq95;
+struct student* ptr;
+
+定义结构体的位置：
+1、定义在 .c 文件里面，并且在函数外面
+这个结构体的类型只能在这个 .c 文件里面使用。
+2、定义在函数里面
+这个结构体只能在这个函数里面使用。
+3、定义在头文件
+只有 include 了这个头文件的 .c/.h 文件才能使用这个结构体
+
+可以使用结构体的名字来代替结构体的详细内容，也可以每次都进行详细的结构体定义。
+如：
+struct student{
+char name[64];
+int age;
+};
+struct student zhrq95;
+等价于
+struct {
+char name[64];
+int age;
+}zhrq95;
+又如：
+struct student{
+char name[64];
+int age;
+}*prt;
+struct student* ptr;
+等价于
+struct {
+char name[64];
+int age;
+}*ptr;
+
+访问结构体的成员：
+1、如果是变量
+使用符号 . 来访问
+如：
+struct student zhrq95;
+zhrq95.age; //访问 zhrq95 的年龄数据
+zhrq95.name;
+2、如果是指针变量
+使用操作符 -> 来访问
+如：
+struct student* ptr;
+ptr -> age;
+ptr -> name;
+或使用 (*ptr). 来访问
+如：
+struct student* ptr;
+(*ptr).age;
+(*ptr).name;
+
+结构体的内存：
+1、变量定义在哪里，内存就分配在对应的地方
+2、给结构体分配的内存大小 >= 数据成员的和
+要保证每个数据成员的内存都是符合数据类型对内存大小的要求；
+为什么会大于：为了提高访问数据成员的速度，编译器在做数据成员排列及整个内存排列时要做内存字节对齐。
+3、数据成员定义在前面的排在内存的前面，定义在后面的排列在后面。

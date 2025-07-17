@@ -1,0 +1,16 @@
+在要被控制的电脑上安装 VNC Server，然后就可以在另一台电脑上安装 VNC Viewer 来访问它
+
+安装好VNC server后，用命令行使用命令：
+  # vnclicense -add Q35YW-ZVH7L-Z94J4-9UJP9-77VFA 
+来添加 VNC 许可证
+
+然后使用命令：
+  # vncserver 
+来启动一个 VNC 服务，第一个 VNC 服务地址为 ip:1，如 192.168.101.156:1
+
+在普通用户下，使用命令：
+  # vncpasswd -user
+即可为其设置 VNC 密码
+
+在 VNC Viewer 地址栏中输入 192.168.101.156:1 即可访问
+

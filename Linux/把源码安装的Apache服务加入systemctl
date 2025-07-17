@@ -1,0 +1,17 @@
+源码安装的 apache 不能使用 systemctl 命令来 start、stop、restart，按如下方法即可。
+在 /usr/lib/systemd/system 路径下创建文件 httpd.servic，内容如下：
+
+[Unit]
+Description = apache2
+After = network.target
+
+[Service]
+Type = forking
+PIDFile = /usr/local/apache2/logs/httpd.pid
+ExecStart = /usr/local/apache2/bin/httpd -k start
+ExecReload = /usr/local/apache2/bin/httpd -k restart
+ExecStop = /usr/local/apache2/bin/httpd -k stop
+PrivateTmp = true
+
+[Install]
+WantedBy = multi-user.target

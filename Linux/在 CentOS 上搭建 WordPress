@@ -1,0 +1,128 @@
+一、安装 LAMP 中的 AMP
+——
+
+安装 apache 服务:
+yum install httpd
+启动 apache 服务:
+systemctl start httpd
+设置 apache 服务开机启动：
+systemctl enable httpd
+然后在物理机浏览器输入虚拟机 IP 地址，就能看到 apache 的服务页面，apache 默认端口是 80
+
+安装 mysql:
+yum install mariadb-server
+Centos7 中 mysql 替换成了 mariadb，其使用命令基本不变
+启动 mysql:http://zhrq95.ngrok.cc
+systemctl start mariadb
+设置 mysql 开机启动：
+systemctl enable mariadb
+进入 mysql 的命令行：
+mysql -u root -p
+提示输入密码，但因为之前没给 mysql 的root用户设置密码，所以直接回车就可以了
+修改 mysql 的 root 用户密码：
+SET PASSWORD FOR ‘root’@’localhost’ = PASSWORD(‘123456’);
+创建名为 wordpress 的数据库：
+create database wordpress;
+
+安装 php：
+yum install php
+重启 apache 使 php 生效：
+systemctl restart httpd
+此时可以在目录：/var/www/html/下建立一个PHP文件
+代码：
+
+然后访问这个文件，就能看到PHP的一些信息，php.ini 配置文件的路径可以在这个页面上看到
+
+安装 php 的各种扩展：
+首先安装 epel 软件源：
+yum install epel-release
+更新系统以捕获 epel 源：
+yum upgrade
+安装 phpmyadmin 以方便管理 php 及 mysql：
+yum install phpmyadmin
+安装好 phpmyadmin 后 libapache-mod-php、php-mysql php-gd php-pear php-xml 等扩展就自动装好了
+
+二、准备 wordpress 和 ngrok
+——
+
+安装 unzip 解压工具以解压 .zip 格式：
+yum install unzip
+下载 wordpress 中文版：
+wget https://cn.wordpress.org/wordpress-4.8.1-zh_CN.zip
+wget 默认下载路径为当前路径
+解压 wordpress：
+unzip wordpress-4.8.1-zh_CN.zip
+复制 解压好的 wordpress 文件夹里面的所有文件到 apache 网页目录的根目录
+cp -R wordpress/× /var/www/html/
+
+下载 ngrok 内网穿透脚本：
+wget http://hls.ctopus.com/sunny/python-ngrok.zip
+解压 ngrok：
+unzip python-ngrok.zip
+这里只需要 sunny.py 这个文件就可以了
+
+在 ngrok 的官网（ https://www.ngrok.cc/ ）注册一个账号， 在隧道管理–>开通隧道 里选择开通一个免费服务器， 得到一个隧道ID（ 在隧道管理里会有记录 ）
+
+运行 ngrok 内网穿透脚本：
+python sunny.py
+然后输入自己刚刚开通的免费隧道 ID 就可以了
+
+三、各种设置
+——
+
+关闭 SELinux 以免遇到奇怪的权限问题：
+查看SELinux状态：
+1、/usr/sbin/sestatus -v ##如果SELinux status参数为enabled即为开启状态
+SELinux status: enabled
+2、getenforce ##也可以用这个命令检查
+关闭SELinux：
+1、临时关闭（不用重启机器）：
+setenforce 0 ##设置SELinux 成为 permissive 模式
+##setenforce 1 即为设置SELinux 成为enforcing模式
+2、永久关闭（修改配置文件需要重启机器）：
+修改/etc/selinux/config 文件
+将SELINUX=enforcing改为SELINUX=disabled
+
+设置目录权限：
+临时设置 html 文件夹的权限为 777，以便安装 wordpress：
+chmod 777 /var/www/html
+然后在物理机的浏览器输入虚拟机 ip，就可以开始 wordpress 的安装，数据库用户名就是 root，密码就是上面修改的 mysql 的root用户的密码 123456
+安装完成后就进入了 wordpress 的后台管理系统：仪表盘
+
+可以临时设置 wp-content 目录的权限为 777 以方便安装主题，更新翻译，更新 wordpress
+
+升级插件时需要 FTP 的解决办法：
+进入 wp-content 目录，新建 tmp 文件夹，设置文件夹的权限为 777
+在 wp-config.php 中倒数几行的 ABSPATH 的后面添加下列三行代码:
+define(‘WP_TEMP_DIR’, ABSPATH.’wp-content/tmp’);/* WordPress的临时目录。*/
+define(“FS_METHOD”, “direct”);
+define(“FS_CHMOD_DIR”, 0777);
+define(“FS_CHMOD_FILE”, 0777);
+最后的代码应该是：
+if ( !defined(‘ABSPATH’) )
+define(‘ABSPATH’, dirname(__FILE__) . ‘/’);
+define(‘WP_TEMP_DIR’, ABSPATH.’wp-content/tmp’);
+define(“FS_METHOD”, “direct”);
+define(“FS_CHMOD_DIR”, 0777);
+define(“FS_CHMOD_FILE”, 0777);
+
+若固定链接设置了带有中文（ 如包含文章名称 ），访问中文页面时出现 404 的解决办法：
+启用 apache 的 rewrite 模块：
+在conf目录的httpd.conf文件中找到
+LoadModule rewrite_module modules/mod_rewrite.so
+将这一行前面的#去掉，若没有则添加
+2.在要支持url rewirte的目录启用 Options FollowSymLinks和AllowOverride All
+
+Options Indexes FollowSymLinks
+AllowOverride All
+Require all granted
+
+注意：debian 系启用mod_rewrite模块方法更为简单： sudo a2enmod rewrite 即可
+
+
+破除媒体库上传文件 2M 的限制：
+修改 php.ini 文件：
+vim /etc/php.ini
+将 upload_max_filesize 的值调大，如调到 120M
+将 post_max_size 的值调大，如调到 120M
+因为上传文件变大，所以上传的时间会增加，将 max_execution_time 的值增大，如调到 300

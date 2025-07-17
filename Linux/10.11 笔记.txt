@@ -1,0 +1,28 @@
+﻿逻辑卷管理 LVM：先将硬盘分为 物理卷（PV），然后将 物理卷 组成 卷组（VG），然后在 卷组的基础上划分 逻辑卷（LV），最后使用 逻辑卷存放数据
+
+
+VMware Workstation 的网络模式：
+桥接：让虚拟机使用宿主机的网络
+NAT：仅想让虚拟机连接网络
+仅主机：只想让宿主机与虚拟机通信
+
+
+Linux 添加系统 Windows7 的引导选项:
+vim /boot/grub2/grub.cfg	
+在 70 行左右的### END /etc/grub.d/00 header 和 ### BEGIN /etc/grub.d/10_linux ### 间添加
+menuentry 'windows7'
+{
+	set root = (hd0,1) # Windows7 的引导设备为第 0 块磁盘的第 1 个分区
+	chainloader +1 # Windows7 的引导顺序
+}
+
+
+ifconfog 得到的信息
+第 1 行：UP 表示网络接口为启用状态
+	RUNNING 表示网卡设备已连接
+	multicast 表示支持组播
+	MTU 为数据包最大传输单元
+第 2 行：依次为网卡 ip、子网掩码、广播地址
+第 3 行：ipv6 地址
+第 4 行：ether 为网卡的 MAC 地址
+第 5 行：接收数据包个数

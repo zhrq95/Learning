@@ -1,0 +1,33 @@
+迁移哪些文件：
+
+1. WordPress安装的时候设置的 MySQL 数据库，它保存了网站所有的设置和数据信息
+
+2. 网站根目录下的 wp-content 目录是存放插件、主题等文件的
+
+3. 网站根目录下的 wp-config.php 文件，包含了网站的基本设置（比如数据库链接信息等）
+
+
+一、
+登录 A 主机的 phpMyAdmin，选中 数据库 wordpress ，点导出，执行并保存为 wordpress.sql
+或者 直接在 A 主机的终端使用命令 mysqldump -u root -p wordpress > wordpress.sql;
+
+二、
+修改 wp-config.php 文件中的信息与 B 主机安装数据库时的设置一致
+
+三、
+把 A 主机的 /var/www/html 文件夹 复制到 B 主机里面相同位置 /var/www/html 
+把 第一步中导出的 wordpress.sql 复制到 B 主机某处 如： /home/zhrq95/
+
+四、
+在 B 主机创建空白数据库，或删除已有的 数据库 wordpress，再创建新的名为 wordpress 的数据库（或登录远程phpMyAdmin，导入本地的数据库文件也行）。
+再 use 这个新建的数据库 导入第一步中导出的 .sql 文件
+ 
+  mysql -u root -p
+  输入密码
+  drop database wordpress;
+  create database wordpress;
+  use wordpress;
+  source /home/zhrq95/wordpress.sql;
+
+五、
+各种设置 目录权限，启用 rewrite 模块，设置 SELINUX

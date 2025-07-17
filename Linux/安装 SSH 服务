@@ -1,0 +1,20 @@
+1.
+安装 SSH 软件（包名为 openssh）
+
+
+2.
+启动 SSH 服务：
+
+    #systemctl start sshd
+或者
+    #/etc/init.d/ssh start 
+或者
+    #service ssh start
+    
+    
+3.
+可用 ps -e | grep ssh 查看 SSH 服务是否启动
+
+
+4.
+在其他系统里面使用 Xmanager Enterprise 5（xShell）、 Putty、 SSH Secure Shell 等即可完成连接

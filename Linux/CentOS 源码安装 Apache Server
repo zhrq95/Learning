@@ -1,0 +1,68 @@
+1.安装 ANSI-C 编译器 GCC
+
+    # sudo yum  install  -y  gcc
+    # sudo yum install gcc-c++
+    安装expat库：# sudo yum install expat-devel,以免 make 时报错
+    
+  
+2.下载
+
+  APR 与 APR-Util 下载： http://apr.apache.org
+  PCRE 下载： http://www.pcre.org
+  Apache Server 下载： http://httpd.apache.org
+
+
+3.安装 APR
+
+  解压解包，并进入 apr 目录：cd  ./apr/。然后，进行APR的源码安装，依次执行命令：
+    ./configure
+    make
+    make install
+APR的默认安装路径为 /usr/local/apr ，也可以使用  --prefix=目录  选项来指定一个安装目录。
+
+
+4.安装APR-Util
+
+  解包APR-Util，并进入 apr-util 目录：cd  ./apr-util/。然后，进行APR-Util的源码安装，依次执行命令：
+    ./configure  --with-apr=/usr/local/apr
+    make
+    make install
+  在安装APR-Util时，必须需要指定APR的安装路径，所以需要带上选项--with-apr=/usr/local/apr，如果你不带这个选项，在 configure 时会报错
+
+
+5.安装PCRE
+
+  解包PCRE，并进入pcre-8.36目录，依次执行命令：
+    ./configure
+    make
+    make  install
+
+
+6.安装 Apache Server 
+
+  解包，并进入 httpd 目录，依次执行命令：
+    ./configure  --enable-mods-shared=all
+    make
+    make  install    
+Apache默认安装在/usr/local/apache2目录下。同样，也可以使用  --prefix=目录名 来指定一个安装目录，例如：
+./configure  --prefix=/usr/mydir  --enable-mods-shared=all
+
+
+7.修改 httpd 配置文件
+
+  修改配置文件httpd.conf中的ServerName
+  用Vim打开httpd.conf配置文件，执行命令：
+      vim  /usr/local/apache2/conf/httpd.conf
+  找到servername后，将ServerName前的#号去掉，将ServerName后面的字符串改为：localhost:80 
+  
+
+8.启动 httpd 服务
+ 
+  查看一下防火墙是否已经关掉： # systemctl  status  firewalld ，如果处于dead状态，就说明已经关掉了。
+  关闭防火墙命令： # systemctl  stop  firewalld
+  执行命令： # /usr/local/apache2/bin/apachectl  -k  start。
+  
+  
+9.检查是否安装成功
+  查看下你系统的IP地址：ifconfig 。可以看到本机IP是 192.168.0.104。
+  打开浏览器，在地址栏中输入：192.168.0.104，回车。可以看到It  works! 说明安装成功

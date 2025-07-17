@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>机电工程学院学生工作</title>
+    
+	<script type="text/javascript" src="./js/js.js"></script>
+    
+    
+	<script>
+	$(function() {
+        var Accordion = function(el, multiple) {
+          this.el = el || {};
+          this.multiple = multiple || false;
+
+          // Variables privadas
+          var links = this.el.find('.link');
+          // Evento
+          links.on('click', {
+            el: this.el,
+            multiple: this.multiple
+          },
+          this.dropdown)
+        }
+
+        Accordion.prototype.dropdown = function(e) {
+          var $el = e.data.el;
+          $this = $(this),
+          $next = $this.next();
+
+          $next.slideToggle();
+          $this.parent().toggleClass('open');
+
+          if (!e.data.multiple) {
+            $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+          };
+        }
+        var accordion = new Accordion($('.accordion'), false);
+      });</script>
+       
+	<script>$(function() {
+        $("#slider").responsiveSlides({
+          auto: true,
+          nav: true,
+          speed: 500,
+          namespace: "callbacks",
+          pager: true,
+        });
+      });</script>
+   
+    <script>$(function() {
+        var sWidth = $("#focus").width(); //获取焦点图的宽度（显示面积） 
+        var len = $("#focus ul li").length; //获取焦点图个数 
+        var index = 0;
+        var picTimer;
+
+        //以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮 
+        var btn = "<div class='btnBg'></div><div class='btn'>";
+        for (var i = 0; i < len; i++) {
+          btn += "<span></span>";
+        }
+        btn += "</div><div class='preNext pre'></div><div class='preNext next'></div>";
+        $("#focus").append(btn);
+        $("#focus .btnBg").css("opacity", 0.5);
+
+        //为小按钮添加鼠标滑入事件，以显示相应的内容 
+        $("#focus .btn span").css("opacity", 0.4).mouseenter(function() {
+          index = $("#focus .btn span").index(this);
+          showPics(index);
+        }).eq(0).trigger("mouseenter");
+
+        //上一页、下一页按钮透明度处理 
+        $("#focus .preNext").css("opacity", 0.2).hover(function() {
+          $(this).stop(true, false).animate({
+            "opacity": "0.5"
+          },
+          300);
+        },
+        function() {
+          $(this).stop(true, false).animate({
+            "opacity": "0.2"
+          },
+          300);
+        });
+
+        //上一页按钮 
+        $("#focus .pre").click(function() {
+          index -= 1;
+          if (index == -1) {
+            index = len - 1;
+          }
+          showPics(index);
+        });
+
+        //下一页按钮 
+        $("#focus .next").click(function() {
+          index += 1;
+          if (index == len) {
+            index = 0;
+          }
+          showPics(index);
+        });
+
+        //本例为左右滚动，即所有li元素都是在同一排向左浮动，所以这里需要计算出外围ul元素的宽度 
+        $("#focus ul").css("width", sWidth * (len));
+
+        //鼠标滑上焦点图时停止自动播放，滑出时开始自动播放 
+        $("#focus").hover(function() {
+          clearInterval(picTimer);
+        },
+        function() {
+          picTimer = setInterval(function() {
+            showPics(index);
+            index++;
+            if (index == len) {
+              index = 0;
+            }
+          },
+          4000); //此4000代表自动播放的间隔，单位：毫秒 
+        }).trigger("mouseleave");
+
+        //显示图片函数，根据接收的index值显示相应的内容 
+        function showPics(index) { //普通切换 
+          var nowLeft = -index * sWidth; //根据index值计算ul元素的left值 
+          $("#focus ul").stop(true, false).animate({
+            "left": nowLeft
+          },
+          300); //通过animate()调整ul元素滚动到计算出的position 
+          //$("#focus .btn span").removeClass("on").eq(index).addClass("on"); //为当前的按钮切换到选中的效果 
+          $("#focus .btn span").stop(true, false).animate({
+            "opacity": "0.4"
+          },
+          300).eq(index).stop(true, false).animate({
+            "opacity": "1"
+          },
+          300); //为当前的按钮切换到选中的效果 
+        }
+      });</script>
+    
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    
+	<style type="text/css">
+	a:link,a:visited{ text-decoration:none; /*超链接无下划线*/ } 
+	a:link {color: #000} /* 未访问的链接 */ 
+	a:hover {color: #FF00FF} /* 鼠标移动到链接上 */ 
+	a:active {color:#F2C789} /* 选定的链接 */
+    </style>
+    
+    <style type="text/css">
+	* {margin:0; padding:0;} 
+	body {font-size:12px; color:#222; font-family:Verdana,Arial,Helvetica,sans-serif; background:#f0f0f0;} 
+	.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;} 
+	.clearfix {zoom:1;} ul,li {list-style:none;} img {border:0;} 
+	
+	.wrapper2 {float:left;margin-left:12%;margin-top:140px;position:relative;z-index:1;} /* 主图片 */ 
+	#focus {width:500px; height:280px; overflow:hidden; position:relative;} 
+	#focus ul {height:380px; position:absolute;} 
+	#focus ul li {float:left; width:500px; height:280px; overflow:hidden; position:relative; background:#000;} 
+	#focus ul li a:link {color: #fff;font-size:16px;line-height:25px;} 
+	#focus ul li div {position:absolute; overflow:hidden;} 
+	#focus .btnBg {position:absolute; width:500px; height:20px; left:0; bottom:0; background:#000;} 
+	#focus .btn {position:absolute; width:480px; height:10px; padding:5px 10px; right:0; bottom:0; text-align:right;} 
+	#focus .btn span {display:inline-block; _display:inline; _zoom:1; width:25px; height:10px; _font-size:0; margin-left:5px; cursor:pointer; background:#fff;} 
+	#focus .btn span.on {background:#fff;} 
+	#focus .preNext {width:45px; height:100px; position:absolute; top:90px; cursor:pointer;} 
+	#focus .pre {left:0;} 
+	#focus .next {right:0; background-position:right top;} 
+	#focus ul li a img{cursor: pointer; transition: all 1s;} 
+	#focus ul li a img:hover{transform: scale(1.15);}
+    </style>
+    
+    <style type="text/css">body{background-color:#F6F6F6} body{overflow-x: hidden;}</style></head>
+  
+ <body>
+  
+    <header id="header" class="animate-onscroll">
+      <!-- main Header -->
+      <div id="top">
+        <div id="whutlogo">
+          <img src="./img/whutlogo.png"></div>
+        <div id="jd_logo">
+          <img src="./img/jd_logo.png"></div>
+      </div>
+     
+      <!-- Lower Header -->
+      <div id="lower-header" class="navbg">
+        <div id="container">
+          <ul id="navigation">
+            <!-- 首页 -->
+            <li class="navhome">
+              <a href="./index.html">首页</a></li>
+            <!-- /首页 -->
+            <!-- 学院概况 -->
+            <li>
+              <li>
+                <a href="武汉理工大学机电学院学生工作.html">学院概况</a>
+                <ul>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">学院简介</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">学院领导</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">组织机构</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">系部设置</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">名师风采</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">办公电话</a></li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">图书分馆</a></li>
+                </ul>
+              </li>
+              <!-- /学院概况 -->
+              <!-- 人事工作 -->
+              <li>
+                <li>
+                  <a href="武汉理工大学机电学院学生工作.html">人事工作</a>
+                  <ul>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">通知公告</a></li>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">高端人才</a></li>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">师资队伍</a></li>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">博士后</a></li>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">校友风采</a></li>
+                  </ul>
+                </li>
+                <!-- /人事工作 -->
+                <!-- 党建工作 -->
+                <li>
+                  <li>
+                    <a href="武汉理工大学机电学院学生工作.html">党建工作</a>
+                    <ul>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">组织机构</a></li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">党群工作</a></li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">理论学习</a></li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">网上党校</a></li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">纪检统战</a></li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">工会工作</a></li>
+                    </ul>
+                  </li>
+                  <!-- /党建工作 -->
+                  <!-- 科学研究 -->
+                  <li>
+                    <li>
+                      <a href="武汉理工大学机电学院学生工作.html">科学研究</a>
+                      <ul>
+                        <li>
+                          <a href="武汉理工大学机电学院学生工作.html">通知公告</a></li>
+                        <li>
+                          <a href="武汉理工大学机电学院学生工作.html">科研政策</a></li>
+                        <li>
+                          <a href="武汉理工大学机电学院学生工作.html">科研成果</a></li>
+                        <li>
+                          <a href="武汉理工大学机电学院学生工作.html">科研基地</a></li>
+                      </ul>
+                    </li>
+                    <!-- /科学研究 -->
+                    <!-- 本科生教学 -->
+                    <li>
+                      <li>
+                        <a href="武汉理工大学机电学院学生工作.html">本科生教学</a>
+                        <ul>
+                          <li>
+                            <a href="武汉理工大学机电学院学生工作.html">通知公告</a></li>
+                          <li>
+                            <a href="武汉理工大学机电学院学生工作.html">教学成果</a></li>
+                          <li>
+                            <a href="武汉理工大学机电学院学生工作.html">第二课堂</a></li>
+                        </ul>
+                      </li>
+                      <!-- /本科生教学 -->
+                      <!-- 研究生教学 -->
+                      <li>
+                        <li>
+                          <a href="武汉理工大学机电学院学生工作.html">研究生教学</a>
+                          <ul>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">通知公告</a></li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">学科概况</a></li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">导师队伍</a></li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">培养管理</a></li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">招生信息</a></li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">文件下载</a></li>
+                          </ul>
+                        </li>
+                        <!-- /研究生教学 -->
+                        <!-- 学生工作 -->
+                        <li>
+                          <li>
+                            <a href="武汉理工大学机电学院学生工作.html">学生工作</a>
+                            <ul>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">通知公告</a></li>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">学工动态</a></li>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">学生组织</a></li>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">学术交流</a></li>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">就业指导</a></li>
+                            </ul>
+                          </li>
+                          <!-- /学生工作 -->
+                          <!-- 国际合作 -->
+                          <li>
+                            <li>
+                              <a href="武汉理工大学机电学院学生工作.html">国际合作</a>
+                              <ul>
+                                <li>
+                                  <a href="武汉理工大学机电学院学生工作.html">国际教育</a></li>
+                                <li>
+                                  <a href="武汉理工大学机电学院学生工作.html">国际交流</a></li>
+                              </ul>
+                            </li>
+                            <!-- /国际合作 -->
+                            <!-- 实验教学 -->
+                            <li>
+                              <li>
+                                <a href="武汉理工大学机电学院学生工作.html">实验教学</a>
+                                <ul>
+                                  <li>
+                                    <a href="武汉理工大学机电学院学生工作.html">实验中心</a></li>
+                                  <li>
+                                    <a href="武汉理工大学机电学院学生工作.html">工程训练中心</a></li>
+                                  <li>
+                                    <a href="武汉理工大学机电学院学生工作.html">研究生实验教学平台</a></li>
+                                </ul>
+                              </li>
+                              <!-- /实验教学作 -->
+                              <li>
+                            <li>
+                              <a >文件下载</a>
+                              <ul>
+                                <li>
+                                  <a href="./download/武汉理工大学校歌（齐唱版）.zip">卓越之歌</a></li>
+                                <li>
+                                  <a href="./download/掌上理工大.apk">掌上理工大</a></li>
+                              </ul>
+                            </li>
+        </div>
+        <!-- /Lower Header --></div>
+        <script  type="text/javascript"> 
+$(document).ready(function(){
+	
+	$(".navbg").capacityFixed();
+	
+	$("#navigation > li").not(".navhome").hover(function(){
+		$(this).addClass("navmoon");
+	},function(){
+		$(this).removeClass("navmoon");
+	});
+	
+});
+</script>
+ </header>
+
+        
+       
+       
+   
+   
+   <div class="cb_box">
+      <div class="normal_tit">
+        <h2>学生工作</h2>
+      </div>
+      <ul class="cb_list">
+        <li>
+          <a href="武汉理工大学机电学院学生工作.html" target="_blank" title="【校运专题】校运开幕青春梦　一代风华理工人"> > 通知公告</a>
+        </li>
+        <li>
+          <a href="武汉理工大学机电学院学生工作.html" target="_blank" title="【本科教学】曾春年副校长带队莅临机电工程学院调研本科教学迎评工作"> > 学工动态</a>
+        </li>
+        <li>
+          <a href="武汉理工大学机电学院学生工作.html" target="_blank" title="【学院动态】校党委万志建副书记带队来学院督导调研基层党建工作"> > 学生组织</a>
+        </li>
+        <li>
+          <a href="武汉理工大学机电学院学生工作.html" target="_blank" title="【学院动态】学院召开2016年下半年工作布置暨师德师风建设报告会"> > 学术交流</a>
+        </li>
+        <li>
+          <a href="武汉理工大学机电学院学生工作.html" target="_blank" title="【学院动态】夏江敬书记一行到机电工程学院调研党风廉政建设工作"> > 就业指导</a>
+        </li>
+        
+      </ul>
+  </div>
+    
+   
+    <div class="content_box">           
+        <li> 
+         <div class="now">
+					当前位置 ：首页 >> 学生工作 >> 学工动态
+		 </div>
+        <br /> 
+        <span1>【两学一做】机电学院2014级党支部召开“两学一做”专题学习会</span1>    
+        <hx>发布时间：2016-05-13</hx>
+        
+        <br /> <br />
+                          
+     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2016年5月9日18:30，机电工程学院2014级学生党支部全体成员在机电大楼四楼会议室召开“两学一做·双过关”专题学习会暨专题学习工作布置会。</span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会上14级辅导员张德来老师首先向大家介绍了本次“两学一做·双过关”主题教育活动的背景以及期望达到的效果。紧接着，在张老师的带领下，支部全体成员一起学习了十八大修改的《党章》《中国共产党廉洁自律准则》和《中国共产党纪律处分条例》。</span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会议要求，“两学一做”学习教育要做到“四个进一步”，即：进一步坚定理想信念，提高党性觉悟；进一步增强政治意识、大局意识、核心意识、看齐意识，坚定正确政治方向；进一步树立清风正气，严守政治纪律政治规矩；进一步强化宗旨观念，勇于担当作为，在生产、工作、学习和社会生活中起先锋模范作用。“五个着力解决”，即：一些党员理想信念模糊动摇的问题、一些党员党的意识淡化的问题、一些党员宗旨观念淡薄的问题、一些党员精神不振的问题、一些党员道德行为不端的问题。通过学习做“四讲四有”（讲政治、有信念，讲规矩、有纪律，讲道德、有品行，讲奉献、有作为）的合格党员。 </span>
+       <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会议最后，张老师强调，《党章》是党的章程的简称，是我党内部最基本和最高的政治行为规范，每一个党员都应该认真学习，牢记党章要求。同时，张老师对本次专题教育学习活动工作进行了部署，强调本次学习重在坚持，关键在自我学习，希望大家通过本次教育学习活动，能够成长为一名优秀的大学生党员。 </span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过全面学习，同学们深刻认识到，大学生党员应该聚集努力学习、勤劳做事的正能量，进一步增强政治意识、大局意识、核心意识、看齐意识，坚定理想信念、保持对党忠诚、树立清风正气、勇于担当作为，充分发挥先锋模范作用；要以一种等不起、慢不得、坐不住的激情和干劲，珍惜党赋予我们的学习生活的平台，担负起国家建设、推动发展、超越创新的责任和使命。 </span>       <br /> 
+    <hy>【通讯员：徐小薇、吕文强 责任编辑：张德来、谢翼、郭文卓】</hy>
+　　　 
+    </li>
+    </div>
+    
+
+   <div class="foot">
+  
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-paint-brush"></i>基地建设
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">国家级实验教学示范中心</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">湖北省数字制造重点实验室</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">武汉理工大学-伯明翰大学智能机械联合重点实验室</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">创新基地</a></li>
+            <li>
+            <a href="武汉理工大学机电学院学生工作.html">创业基地</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-code"></i>快速链接
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">系部设置</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">师资队伍</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">校友风采</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-mobile"></i>友情链接
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">武汉理工大学</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">教育部</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">民政部民间组织管理局</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">  北京大学校友总会</a></li>
+        </ul>
+      </li>
+    </div>
+    <div class="accordion">
+      <li>
+        <div class="link">
+          <i class="fa fa-globe"></i>联系我们
+          <i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">院长信箱</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">书记信箱</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">学工信箱</a></li>
+          <li>
+            <a href="武汉理工大学机电学院学生工作.html">电话查询</a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+  
+  <div class="footer">
+      <p class="copyright">版权所有&copy; 武汉理工大学机电工程学院<br />通讯地址：湖北省武汉市洪山区珞狮路122号 武汉理工大学机电工程学院<br /> 邮政编码：430070</p></div>
+  
+  </body>
+  
+
+</html>

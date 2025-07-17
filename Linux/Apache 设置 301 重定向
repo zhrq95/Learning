@@ -1,0 +1,63 @@
+想把 www.zhrq95.top 作为网站域名，想实现把裸域名 zhrq95.com 全部重定向（跳转）到 www.zhrq95.top 的时候可以使用 301 重定向，此方法可以避免流量损失
+
+
+1. Apache模块 mod_alias的 Redirect 和 RedirectMatch 命令
+
+RedirectMatch 基于 正则表达式匹配 对当前的 URL 发送一个外部重定向语法为：
+
+Redirect ［status］ URL-path URL
+
+RedirectMatch ［status］ regex URL
+
+status参数可以使用以下HTTP状态码：
+
+permanent ：返回一个永久性重定向状态码（301），表示此资源的位置变动是永久性的。
+
+temp ：返回一个临时性重定向状态码（302），这是默认值。
+
+seeother ：返回一个“参见”状态码（303），表示此资源已经被替代。
+
+gone ： 返回一个“已废弃”状态码（410），表示此资源已经被永久性地删除了。如果指定了这个状态码，则URL参数将被忽略。
+
+
+例如：
+
+APACHE
+
+Redirect 301 /old/old.htm http://www.zhrq95.top/new.htm
+Redirect permanent /one http://zhrq95.top/two
+RedirectMatch 301 (.*).gif$ http://www.zhrq95.top/images/$1.jpg
+
+
+
+2.使用 mod_rewrite 重写 URL 方式
+
+APACHE
+
+Options +FollowSymLinks
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^zhrq95.top
+RewriteRule ^(.*)$ http://www.zhrq95.top/$1 [R=permanent,L]
+
+在这里判断当前服务器变量 HTTP_HOST 是否等于 zhrq95.top，为真就进行重写，按照 R=permanent 进行永久重定向，L 表示并立即停止重写操作，
+并不再应用其他重写规则
+
+下面是最终的 .htaccess 文件，同时也并入 wordpress 重写规则。
+
+APACHE
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#Redirect
+Options +FollowSymLinks
+RewriteCond %{HTTP_HOST}   ^php100.com$
+RewriteCond %{HTTP_HOST}   !^$
+RewriteRule ^(.*)$ http://www.php100.com/$1 [R=301,L]
+#Rewrite(blog)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog/.* /blog/index.php [L]
+RewriteRule . -
+</IfModule>
+# END WordPress

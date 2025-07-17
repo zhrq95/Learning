@@ -1,0 +1,8 @@
+若出现
+ DisallowedHost 
+ Invalid HTTP_HOST header: '192.168.101.180:8000'
+不能通过 ip:80 来访问，只能通过 127.0.0.1:8000访问
+
+需要修改django项目中settings.py文件：
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1','192.168.9.209','localhost'] ----> 可以访问网站的ip

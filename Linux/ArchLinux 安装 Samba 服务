@@ -1,0 +1,45 @@
+
+1.安装
+  安装Samba包(这将同时安装samba客户端smbclient ):
+     # pacman -S samba
+
+2.配置
+  配置文件为： /etc/samba/smb.conf
+  Arch下有个示例的默认配置文件为： /etc/samba/smb.conf.default
+  先拷贝一个默认的，然后修改之：
+    # cp /etc/samba/smb.conf.default /etc/samba/smb.conf
+
+
+在 smb.conf 末尾添加：
+———————————————————————————
+[zhrq95]                                                               
+   comment = Temporary file space
+   path = /home/zhrq95
+   read only = no
+   public = yes
+————————————————————————————
+
+
+3.增加用户
+  # pdbedit -a -u <user>
+  回车后，设定访问共享目录的用户名和密码
+
+4.启动和停止服务
+  启动：# systemctl start smbd.service nmbd.service
+  停止：# systemctl start smbd.service nmbd.service
+  开机自启：# systemctl enable smbd.service nmbd.service
+  开机不自启：# systemctl disable smbd.service nmbd.service
+  
+  
+使用Shell脚本启动samba服务：
+————————————————————————————
+#!/bin/bash
+sudo systemctl start smbd.service nmbd.service winbindd.service
+————————————————————————————
+
+
+使用Shell脚本停止samba服务：
+————————————————————————————
+#!/bin/bash
+sudo systemctl stop smbd.service nmbd.service winbindd.service
+————————————————————————————

@@ -1,0 +1,61 @@
+除了系统为三类用户定义的三种权限外，有时系统对权限会有一些特殊的要求。
+
+SUID（Set-User-ID、setuid）：是三种特殊权限中的第 1 位。通过在某文件上设置 SUID 位，当用户在访问该文件时，用户临时拥有该文件的属主用户的权限。比如 /usr/bin/passwd，如果一般用户执行该文件，则在执行过程中，该文件可以获得root权限，从而可以更改用户的密码。例如，普通用户使用 passwd 命令修改密码时，需要临时拥有 root 用户的权力，这需要在被执行命令文件中定义一些特殊的位。
+
+SGID（Set-Group-ID、setgid）：是三种特殊权限中的第 2 位，若某文件的所属用户组位 g ，且该文件的 SGID 位被设置，当用户访问该文件时，用户将临时扮演用户组 g 中用户的角色。若在某目录上设置 SGID 位，则该目录中建立文件或目录的所属用户组位该目录的所属用户组
+
+Sticky 位（sticky bit）：是三种特殊权限中的第 3 位。该位可以理解为防删除位。如果希望用户能够添加文件但同时不能删除文件，则可以对目录使用 sticky bit 位。对目录设置 Sticky 位，且用户在该目录具有 “w” 和 “x” 权限，用户也只能删除属于自己的文件或目录。例如临时目录 /tmp
+
+三个权限的特点：
+
+Sticky（范例：/tmp目录）
+①sticky只能应用在目录上，并且是应用在其它人上。
+②只有root和文件的拥有人才能删除该文件。
+③小写表示能执行，大写表示不能执行
+
+Suid（范例：/usr/bin/passwd目录）
+①suid只能应用在二进制文件中
+②当一个文件应用了suid，那么任何人在执行该命令的时候他就临时拥有该文件拥有人的权限
+③suid只能应用在文件的拥有人上
+④小写表示能执行，大写表示不能执行
+
+Sgid（应用环境为用于一组开发人员共用资源，保证安全）
+①sgid既可以应用在文件上，也可以应用在目录上
+②当sgid应用在目录上时，任何人在该目录中建立健全的文件和目录的拥有者属于目录所属组
+③应用在拥有组上
+④sgid应用在文件上时，任何人在执行该文件时，临时拥有该文件所属组权限
+⑤小写表示可执行，大写反之。
+
+
+操作这些标志与操作文件权限的命令是一样的, 都是 chmod 。有两种方法来操作：
+① chmod u+s temp — 为temp文件加上setuid标志。 (setuid 只对文件有效)
+chmod g+s tempdir — 为tempdir目录加上setgid标志 (setgid 对目录和文件有效)
+chmod o+t temp — 为temp文件加上sticky标志 (sticky只对文件有效)
+② 采用八进制方式。对一般文件通过三组八进制数字来置标志，如 666，777，644等。如果设置这些特殊标志，则在这组数字之外外加一组八进制数字，如4666，2777等。这一组八进制数字三位的意义如下，
+abc
+a – setuid位。如果该位为1，则表示设置setuid
+b – setgid位。如果该位为1，则表示设置setgid
+c – sticky位。如果该位为1，则表示设置sticky
+我习惯用第一种方法来做，但许多时候文件的权限表示都是用数字为执行；所以，建议两种方法都要掌握熟悉。
+设置完这些标志后, 可以用 ls -l 来查看。 如果有这些标志，则会在原来的执行标志位置上显示。 如
+rwsrw-r– 表示有setuid标志
+rwxrwsrw- 表示有setgid标志
+rwxrw-rwt 表示有sticky标志
+那么原来的执行标志x到哪里去了呢？系统是这样规定的，如果本来在该位上有x，则这些特殊标志显示为小写字母 (s, s, t)。否则, 显示为大写字母 (S, S, T)
+
+[root@lucky eisoo]# mkdir file.sh
+[root@lucky eisoo]# ll
+总计 4
+drwxr-xr-x 2 root root 4096 11-07 13:17 file.sh
+[root@lucky eisoo]# chmod 4755 file.sh
+[root@lucky eisoo]# ll
+总计 4
+drwsr-xr-x 2 root root 4096 11-07 13:17 file.sh
+[root@lucky eisoo]# chmod 6755 file.sh
+[root@lucky eisoo]# ll
+总计 4
+drwsr-sr-x 2 root root 4096 11-07 13:17 file.sh
+[root@lucky eisoo]# chmod 7755 file.sh
+[root@lucky eisoo]# ll
+总计 4
+drwsr-sr-t 2 root root 4096 11-07 13:17 file.sh

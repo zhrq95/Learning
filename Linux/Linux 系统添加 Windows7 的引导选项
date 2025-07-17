@@ -1,0 +1,7 @@
+vim /boot/grub2/grub.cfg	
+在 70 行左右的 ### END /etc/grub.d/00 header 和 ### BEGIN /etc/grub.d/10_linux ### 间添加
+menuentry 'Windows7'
+{
+	set root = (hd0,1) # 表示 Windows7 的引导设备为第 0 块磁盘的第 1 个分区，根据实际情况填
+	chainloader +1 # 启动菜单中 Windows7 选项的引导顺序
+}

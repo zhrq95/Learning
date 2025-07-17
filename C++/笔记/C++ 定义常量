@@ -1,0 +1,51 @@
+在 C++ 中，有两种简单的定义常量的方式：
+
+    使用 #define 预处理器。
+    使用 const 关键字。
+
+
+1、#define 预处理器
+
+#include <iostream>
+using namespace std;
+ 
+#define LENGTH 10   
+#define WIDTH  5
+#define NEWLINE '\n'
+ 
+int main()
+{
+ 
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+
+
+2、
+const 关键字
+
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   const int  LENGTH = 10;
+   const int  WIDTH  = 5;
+   const char NEWLINE = '\n';
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+
+
+const限定符定以后是不可以改变的，所以在定义时必须赋初始值，要不然是错误的，除非这个变量是用extern修饰的外部变量。 例如：
+const int A=10;       //正确。
+const int A;          //错误，没有赋初始值。
+extern const int A;   //正确，使用extern的外部变量。

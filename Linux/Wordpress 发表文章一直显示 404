@@ -1,0 +1,12 @@
+一、
+可能是没有开启apache的mod_rewrite模块
+sudo a2enmod rewrite
+开启位于/etc/apache2/mods_avilable里面的rewrite模块，然后
+vim /etc/apache2/apache2.conf
+把<Directory /var/www/>里面的#AllowOverride None#改为#AllowOverride All#
+
+二、
+更改 设置 --> 固定链接 的URL表现形式，换个URL
+
+三、
+给 /var/www 文件夹适当的权限

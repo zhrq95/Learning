@@ -1,0 +1,13 @@
+系统上比较重要的目录有 /etc, /home, /root, /var/spool/mail 等，现在想要在每天 2:45am 进行备份，且备份数据存到 /backup 内，
+备份使用 tar 打包 ，使用 shell script 来进行备份数据的：
+
+[root@localhost ~]# mkdir /root/bin; vim /root/bin/backup.sh 
+  #!/bin/bash 
+  backdir="/etc /home /root /var/spool/mail" 
+  basedir=/backup 
+  [ ! -d "$basedir" ] && mkdir $basedir 
+  backfile=$basedir/backup.tar.gz 
+  tar -zcvf $backfile $backdir 
+
+[root@localhost ~]# vim /etc/crontab 
+  45 2 * * * root sh /root/bin/backup.sh

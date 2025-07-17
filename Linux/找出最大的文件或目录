@@ -1,0 +1,57 @@
+1.
+显示在我的/home分区中最大的 5 个目录：　　　
+
+    # du -a /home | sort -n -r | head -n 5
+
+du ：评估磁盘空间的用法
+  -a ：显示所有文件和文件夹
+  
+sort ：排序文本文件。
+　-n：比较记录字符串的值
+　-r：反向的比较值
+ 
+head：输出的文件头
+　-n：打印第n行
+
+
+
+2.
+显示上面的值为人们能读懂的格式（用KB,MB,或GB显示）
+
+    # du -hs * | sort -rh | head -5
+    
+   
+   
+3. 
+显示最大文件/文件夹包括子目录的命令是：　
+
+    # du -Sh | sort -rh | head -5
+
+
+du ：评估磁盘空间的用法
+  -h: 打印人们可以读懂的格式（等等.10MB）
+  -S: 不包括子目录的尺寸。
+  -s:　仅仅显示每个目录的参数。
+
+sort　命令：　排序文本文件。
+　-r: 反向的比较值。
+　-h：比较人类可以读懂的数字（等等，２k ,1G）
+ 
+head:输出文件的开始部分。
+
+
+
+4.
+仅仅找出文件　
+    
+    # find -type f -exec du -Sh {} + | sort -rh | head -n 5
+    
+    
+5.
+在本地找出最大文件，包括路径：
+
+    # find /home/tecmint/Downloads/ -type f -exec du -Sh {} + | sort -rh | head -n 5
+或者
+    # find /home/tecmint/Downloads/ -type f -printf "%s %p" | sort -rn | head -n 5
+
+从 /home/tecmint/Downloads　目录下显示出最大的文件。
